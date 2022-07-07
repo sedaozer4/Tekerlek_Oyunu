@@ -13,7 +13,7 @@ public class Altin : MonoBehaviour
     
     void Update()
     {
-        transform.Rotate(50 * Time.deltaTime, 0, 0);
+        transform.Rotate(0, 50 * Time.deltaTime, 0);
     }
 
     private void OnTriggerEnter(Collider other)
