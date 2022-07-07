@@ -18,7 +18,7 @@ public class OyuncuController : MonoBehaviour
 
     public Animator animator;
 
-    private bool isSliding = false;
+  //  private bool isSliding = false;
 
     void Start()
     {
@@ -33,34 +33,10 @@ public class OyuncuController : MonoBehaviour
 
         if(forwardSpeed < maxSpeed)
         {
-            forwardSpeed += 0.1f * Time.fixedDeltaTime;
+             forwardSpeed += 0.07f * Time.fixedDeltaTime;
         }
             
-
-        animator.SetBool("isGameStarted",true);    
-
         direction.z = forwardSpeed;
-
-       
-        
-       //  if(controller.isGrounded)
-      // {
-           // direction.y = -1;
-
-            if(SwipeManager.swipeUp)
-            {
-                 Jump();
-
-            }
-     //  }else
-       {
-            direction.y += Gravity * Time.deltaTime;
-       }
-       
-        if(SwipeManager.swipeDown && !isSliding)
-        {
-            StartCoroutine(Slide());
-        }
 
         if(SwipeManager.swipeRight)
         {
@@ -86,9 +62,6 @@ public class OyuncuController : MonoBehaviour
             targetPosition += Vector3.right*seritMesafesi;
         }
         
-   
-        //transform.position = Vector3.Lerp(transform.position, targetPosition, 80*Time.fixedDeltaTime);
-
         if(transform.position == targetPosition)
             return;
             
@@ -108,14 +81,11 @@ public class OyuncuController : MonoBehaviour
             return;
 
         controller.Move(direction*Time.fixedDeltaTime);
-
-       
     }
 
     private  void  Jump()
     {
         direction.y = jumpForce;
-         
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -127,7 +97,7 @@ public class OyuncuController : MonoBehaviour
         }
     }
 
-    private IEnumerator Slide()
+  /*  private IEnumerator Slide()
     {
         isSliding = true;
 
@@ -144,6 +114,6 @@ public class OyuncuController : MonoBehaviour
         animator.SetBool("isSliding", false);
 
         isSliding = false;
-    }
+    }*/
 }
 
