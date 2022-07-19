@@ -14,8 +14,9 @@ public class OyuncuController : MonoBehaviour
     public float Gravity = -20;
     public float timecount = 60;
     public Animator animator;
-
-    private bool isSliding = false;
+    public static bool GameIsPaused = false;
+    public GameObject pauseMenu;
+    
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -26,8 +27,7 @@ public class OyuncuController : MonoBehaviour
         if(!OyuncuManager.isGameStarted)
             return;
 
-      
-        if (forwardSpeed < maxSpeed)
+        if (forwardSpeed < maxSpeed && PlayerPrefs.GetInt("pause")==0)
         {
              forwardSpeed += 0.9f * Time.fixedDeltaTime;
         }
@@ -37,6 +37,7 @@ public class OyuncuController : MonoBehaviour
             istenenSerit++;
             if(istenenSerit == 3)   
                 istenenSerit = 2;
+            FindObjectOfType<SesYoneticisi>().PlaySound("Slide");
         }
 
         if(SwipeManager.swipeLeft)
@@ -44,6 +45,7 @@ public class OyuncuController : MonoBehaviour
             istenenSerit--;
             if(istenenSerit == -1)   
                 istenenSerit = 0;
+            FindObjectOfType<SesYoneticisi>().PlaySound("Slide");
         }
     
        
@@ -61,7 +63,7 @@ public class OyuncuController : MonoBehaviour
             return;
             
         Vector3 diff = targetPosition - transform.position;
-        Vector3 moveDir = diff.normalized * 10 * Time.deltaTime;
+        Vector3 moveDir = diff.normalized * 15 * Time.deltaTime;
 
         if(moveDir.sqrMagnitude < diff.sqrMagnitude)
             controller.Move(moveDir);
@@ -92,8 +94,11 @@ public class OyuncuController : MonoBehaviour
         if (other.transform.tag == "slow")
         {
             forwardSpeed -= forwardSpeed * 50 / 100;
+            FindObjectOfType<SesYoneticisi>().PlaySound("Kum");
         }
+
     }
+
     
 }
 

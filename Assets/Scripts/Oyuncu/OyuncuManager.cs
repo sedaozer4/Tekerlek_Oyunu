@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using System;
+using UnityEngine.SceneManagement;
+
 public class OyuncuManager : MonoBehaviour
 {
     public static bool gameOver;
@@ -10,13 +13,16 @@ public class OyuncuManager : MonoBehaviour
     public GameObject startingText;
     public static float altinNumarasi;
     public Text coinsText;
-    public bool isTime = false;
-
+    public Text metresText;
+    public bool isTime;
+    public static float metres;
     public int maximum;
     public int current;
     public Image mask;
     public int minimum;
-
+    public GameObject pauseMenu;
+    public bool isPause;
+    public int stop;
     void Start()
     {
         gameOver = false;
@@ -24,14 +30,19 @@ public class OyuncuManager : MonoBehaviour
         isGameStarted = false;
         altinNumarasi = 30;
         isTime = true;
+        isPause = false;
+        // metres=0;
+       
     }
     void Update()
     {
-        if (isTime == true&& isGameStarted==true)
+
+        if (isTime == true&& isGameStarted==true && isPause==false)
         {
             altinNumarasi -=  0.5f * Time.fixedDeltaTime;
-          
+            metres += 0.5f * Time.fixedDeltaTime;
         }
+
           
         if ((int)altinNumarasi == 0)
         {
@@ -40,7 +51,7 @@ public class OyuncuManager : MonoBehaviour
             FindObjectOfType<SesYoneticisi>().PlaySound("OyunBitimi");
         }
         coinsText.text =  (int)altinNumarasi +"s";
-       
+        metresText.text = Math.Round(metres, 1)  +"m" ;
 
         if (gameOver)
         {
@@ -58,11 +69,34 @@ public class OyuncuManager : MonoBehaviour
     }
     void GetCurrentFill()
     {
-       
         float currentOffset = (int)altinNumarasi - minimum;
         float maximumOffset = maximum - minimum;
         float fillAmount = currentOffset / maximumOffset;
         mask.fillAmount = fillAmount;
-
     }
+    public void Pause()
+    {
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0f;
+        isPause = true;
+        PlayerPrefs.SetInt("pause", 1);
+       
+    }
+    public void Resume()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+        isPause = false;
+        PlayerPrefs.SetInt("pause", 0);
+    }
+    public void Home()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 0f;
+        isPause = false;
+        PlayerPrefs.SetInt("pause", 0);
+        SceneManager.LoadScene("Menu");
+        metres=0;
+    }
+
 }

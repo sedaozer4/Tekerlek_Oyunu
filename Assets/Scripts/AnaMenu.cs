@@ -7,7 +7,10 @@ public class AnaMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Level");
     }
-
+    public void Home()
+    {
+        SceneManager.LoadScene("Menu");
+    }
     public void OyundanCik()
     {
         Application.Quit();
