@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Altin : MonoBehaviour
 {
-  
-    void Start()
+    public GameObject alert;
+     void Start()
     {
-        
+       
     }
 
     
     void Update()
     {
-        transform.Rotate(0, 50 * Time.deltaTime, 0);
+        transform.Rotate(0,  50 * Time.deltaTime,0);
+      
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -21,8 +23,12 @@ public class Altin : MonoBehaviour
         if(other.tag == "Player")
         {
             FindObjectOfType<SesYoneticisi>().PlaySound("AltınSesi");
-            OyuncuManager.altinNumarasi += 1;
+
+            OyuncuManager.altinNumarasi += 10;
+            alert.SetActive(true);
             Destroy(gameObject);
+        
+
         }
     }
 }

@@ -8,36 +8,30 @@ public class OyuncuController : MonoBehaviour
     private Vector3 direction;
     public float forwardSpeed;
     public float maxSpeed;
-
     private int istenenSerit = 1; // 0:sol 1:orta 2:sağ
-
     public float seritMesafesi = 4;
-
     public float jumpForce;
     public float Gravity = -20;
-
+    public float timecount = 60;
     public Animator animator;
 
-  //  private bool isSliding = false;
-
+    private bool isSliding = false;
     void Start()
     {
         controller = GetComponent<CharacterController>();
     }
 
-   
     void Update()
     {
         if(!OyuncuManager.isGameStarted)
             return;
 
-        if(forwardSpeed < maxSpeed)
+      
+        if (forwardSpeed < maxSpeed)
         {
-             forwardSpeed += 0.07f * Time.fixedDeltaTime;
+             forwardSpeed += 0.9f * Time.fixedDeltaTime;
         }
-            
         direction.z = forwardSpeed;
-
         if(SwipeManager.swipeRight)
         {
             istenenSerit++;
@@ -51,7 +45,8 @@ public class OyuncuController : MonoBehaviour
             if(istenenSerit == -1)   
                 istenenSerit = 0;
         }
-
+    
+       
         Vector3 targetPosition = transform.position.z * transform.forward + transform.position.y * transform.up;
    
         if(istenenSerit == 0)
@@ -66,7 +61,7 @@ public class OyuncuController : MonoBehaviour
             return;
             
         Vector3 diff = targetPosition - transform.position;
-        Vector3 moveDir = diff.normalized * 25 * Time.deltaTime;
+        Vector3 moveDir = diff.normalized * 10 * Time.deltaTime;
 
         if(moveDir.sqrMagnitude < diff.sqrMagnitude)
             controller.Move(moveDir);
@@ -83,11 +78,7 @@ public class OyuncuController : MonoBehaviour
         controller.Move(direction*Time.fixedDeltaTime);
     }
 
-    private  void  Jump()
-    {
-        direction.y = jumpForce;
-    }
-
+   
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if(hit.transform.tag == "Obstacle")
@@ -96,24 +87,13 @@ public class OyuncuController : MonoBehaviour
             FindObjectOfType<SesYoneticisi>().PlaySound("OyunBitimi");
         }
     }
-
-  /*  private IEnumerator Slide()
+    void OnTriggerEnter(Collider other)
     {
-        isSliding = true;
-
-        animator.SetBool("isSliding", true);
-
-        controller.center = new Vector3(0, -0.5f, 0);
-        controller.height = 1;
-
-        yield return new WaitForSeconds(1.3f);
-
-        controller.center = new Vector3(0, 0, 0);
-        controller.height = 2;
-
-        animator.SetBool("isSliding", false);
-
-        isSliding = false;
-    }*/
+        if (other.transform.tag == "slow")
+        {
+            forwardSpeed -= forwardSpeed * 50 / 100;
+        }
+    }
+    
 }
 

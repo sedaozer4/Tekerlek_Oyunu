@@ -26,7 +26,8 @@ public class TileManager : MonoBehaviour
     {
         if(oyuncuTransform.position.z - 35 > zSpawn- (tileNumarasi * tileLength))
         {
-            SpawnTile(Random.Range(0, tilePrefabs.Length));
+            SpawnTile(Random.Range(0, tilePrefabs.Length)); 
+
             DeleteTile();
         }
     }
@@ -34,8 +35,10 @@ public class TileManager : MonoBehaviour
     public void SpawnTile(int tileIndex)
     {
         GameObject go = Instantiate(tilePrefabs[tileIndex], transform.forward * zSpawn, transform.rotation);
+        
         activeTiles.Add(go);
         zSpawn += tileLength;
+
     }
 
     private void DeleteTile()
