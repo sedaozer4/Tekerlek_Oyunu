@@ -23,9 +23,16 @@ public class OyuncuManager : MonoBehaviour
     public GameObject pauseMenu;
     public bool isPause;
     public int stop;
+    public float highscore;
+    public float score;
+    public GameObject highscoreText;
     void Start()
     {
-        gameOver = false;
+        if (!PlayerPrefs.HasKey("highscore"))
+        {
+            PlayerPrefs.SetFloat("highscore", 0);
+        }
+       
         Time.timeScale = 1f;
         isGameStarted = false;
         altinNumarasi = 30;
@@ -58,6 +65,14 @@ public class OyuncuManager : MonoBehaviour
             Time.timeScale = 0;
             gameOverPanel.SetActive(true);
             isTime = false;
+            highscore= PlayerPrefs.GetFloat("highscore");
+            if (metres > highscore)
+            {
+                PlayerPrefs.SetFloat("highscore", metres);
+                highscoreText.SetActive(true);
+             
+            }
+            metres = 0;
         }
 
         if(SwipeManager.tap)
