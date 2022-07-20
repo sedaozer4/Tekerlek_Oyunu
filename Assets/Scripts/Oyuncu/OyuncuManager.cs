@@ -32,6 +32,7 @@ public class OyuncuManager : MonoBehaviour
         {
             PlayerPrefs.SetFloat("highscore", 0);
         }
+
        
         Time.timeScale = 1f;
         isGameStarted = false;
@@ -73,6 +74,7 @@ public class OyuncuManager : MonoBehaviour
              
             }
             metres = 0;
+            OyuncuManager.gameOver = false;
         }
 
         if(SwipeManager.tap)
