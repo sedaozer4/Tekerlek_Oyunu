@@ -7,6 +7,7 @@ public class OyuncuController : MonoBehaviour
     private CharacterController controller;
     private Vector3 direction;
     public float forwardSpeed;
+    public float km;
     public float maxSpeed;
     private int istenenSerit = 1; // 0:sol 1:orta 2:sağ
     public float seritMesafesi = 4;
@@ -16,7 +17,10 @@ public class OyuncuController : MonoBehaviour
     public Animator animator;
     public static bool GameIsPaused = false;
     public GameObject pauseMenu;
-    
+    public float zaman;
+    public float fSpeed;
+ 
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -30,9 +34,23 @@ public class OyuncuController : MonoBehaviour
         if (forwardSpeed < maxSpeed && PlayerPrefs.GetInt("pause")==0)
         {
              forwardSpeed += 0.9f * Time.fixedDeltaTime;
+
+            km += 0.9f * Time.fixedDeltaTime;
+            OyuncuManager.road = km * Time.fixedDeltaTime; 
+           
         }
+      
         direction.z = forwardSpeed;
-        if(SwipeManager.swipeRight)
+      
+       if (forwardSpeed >= maxSpeed && PlayerPrefs.GetInt("pause") == 0)
+        {
+
+            km += 0.9f * Time.fixedDeltaTime;
+            OyuncuManager.road = km * Time.fixedDeltaTime;
+        }
+
+        
+        if (SwipeManager.swipeRight)
         {
             istenenSerit++;
             if(istenenSerit == 3)   

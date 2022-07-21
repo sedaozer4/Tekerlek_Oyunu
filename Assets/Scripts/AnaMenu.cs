@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class AnaMenu : MonoBehaviour
 {
+    private void Start()
+    {
+       
+    }
     public void Oyna()
     {
         SceneManager.LoadScene("Level");
@@ -13,6 +17,7 @@ public class AnaMenu : MonoBehaviour
     }
     public void OyundanCik()
     {
+        PlayerPrefs.SetInt("pause", 0);
         Application.Quit();
     }
 

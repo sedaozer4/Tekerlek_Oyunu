@@ -921,6 +921,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: signed_short_barrier
       objectReference: {fileID: 0}
+    - target: {fileID: 177858, guid: 73d18ed494f69ad41b44fe6d2c7c54d4, type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
+      objectReference: {fileID: 0}
     - target: {fileID: 442014, guid: 73d18ed494f69ad41b44fe6d2c7c54d4, type: 3}
       propertyPath: m_RootOrder
       value: 0

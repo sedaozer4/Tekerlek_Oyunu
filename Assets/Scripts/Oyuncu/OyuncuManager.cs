@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
+using Random = System.Random;
 
 public class OyuncuManager : MonoBehaviour
 {
@@ -21,36 +22,59 @@ public class OyuncuManager : MonoBehaviour
     public Image mask;
     public int minimum;
     public GameObject pauseMenu;
-    public bool isPause;
+    public  bool isPause;
     public int stop;
     public float highscore;
-    public float score;
-    public GameObject highscoreText;
+    public Text scoreText;
+    public GameObject highscorePanel;
+    public Text highMetres;
+    public Text placement;
+    public static float road;
+    public GameObject inGamePanel;
+    public ParticleSystem confetti;
+    public bool confettiActive;
+    public GameObject soundIcon;
     void Start()
     {
+        if (!PlayerPrefs.HasKey("pause"))
+        {
+            PlayerPrefs.SetFloat("pause", 1);
+        }
         if (!PlayerPrefs.HasKey("highscore"))
         {
             PlayerPrefs.SetFloat("highscore", 0);
         }
-
-       
+        if (!PlayerPrefs.HasKey("place"))
+        {
+            PlayerPrefs.SetInt("place", 4000);
+        }
         Time.timeScale = 1f;
         isGameStarted = false;
         altinNumarasi = 30;
         isTime = true;
         isPause = false;
         // metres=0;
-       
+        inGamePanel.SetActive(true);
+        road = 0;
+        confettiActive = false;
     }
     void Update()
     {
 
+        if (confettiActive == true)
+        {
+            confetti.Play();
+        }
+        else
+        {
+            confetti.Stop();
+        }
+
         if (isTime == true&& isGameStarted==true && isPause==false)
         {
             altinNumarasi -=  0.5f * Time.fixedDeltaTime;
-            metres += 0.5f * Time.fixedDeltaTime;
+        //    metres += 0.5f * Time.fixedDeltaTime;
         }
-
           
         if ((int)altinNumarasi == 0)
         {
@@ -59,22 +83,39 @@ public class OyuncuManager : MonoBehaviour
             FindObjectOfType<SesYoneticisi>().PlaySound("OyunBitimi");
         }
         coinsText.text =  (int)altinNumarasi +"s";
-        metresText.text = Math.Round(metres, 1)  +"m" ;
+        metresText.text = Math.Round(road,2)  +" km" ;
+        highMetres.text =  Math.Round(PlayerPrefs.GetFloat("highscore"), 2)+"km";
 
-        if (gameOver)
-        {
+        if (gameOver){
+
             Time.timeScale = 0;
-            gameOverPanel.SetActive(true);
             isTime = false;
             highscore= PlayerPrefs.GetFloat("highscore");
-            if (metres > highscore)
+            if (road > highscore)
             {
-                PlayerPrefs.SetFloat("highscore", metres);
-                highscoreText.SetActive(true);
-             
+                confettiActive = true;
+               
+                PlayerPrefs.SetFloat("highscore", road);
+                highscorePanel.SetActive(true);
+                Random rnd = new Random();
+                int place = rnd.Next(PlayerPrefs.GetInt("place")-100, PlayerPrefs.GetInt("place"));
+                PlayerPrefs.SetInt("place", place);
+                highscorePanel.SetActive(true);
+                placement.text = PlayerPrefs.GetInt("place") + " - You";
+                inGamePanel.SetActive(false);
+                OyuncuManager.gameOver = false;
+              
             }
-            metres = 0;
-            OyuncuManager.gameOver = false;
+            else
+            {   
+                inGamePanel.SetActive(false);
+                gameOverPanel.SetActive(true);
+                OyuncuManager.gameOver = false;
+                scoreText.text = "Score: "+Math.Round(road, 2) + " km";
+              
+            }
+            road = 0;
+          
         }
 
         if(SwipeManager.tap)
@@ -97,7 +138,8 @@ public class OyuncuManager : MonoBehaviour
         Time.timeScale = 0f;
         isPause = true;
         PlayerPrefs.SetInt("pause", 1);
-       
+        soundIcon.SetActive(true);
+
     }
     public void Resume()
     {
@@ -105,6 +147,7 @@ public class OyuncuManager : MonoBehaviour
         Time.timeScale = 1f;
         isPause = false;
         PlayerPrefs.SetInt("pause", 0);
+        soundIcon.SetActive(false);
     }
     public void Home()
     {
@@ -113,7 +156,7 @@ public class OyuncuManager : MonoBehaviour
         isPause = false;
         PlayerPrefs.SetInt("pause", 0);
         SceneManager.LoadScene("Menu");
-        metres=0;
+        road = 0;
     }
 
 }
