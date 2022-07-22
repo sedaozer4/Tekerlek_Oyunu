@@ -28,6 +28,7 @@ public class OyuncuController : MonoBehaviour
 
     void Update()
     {
+
         if(!OyuncuManager.isGameStarted)
             return;
 
@@ -98,7 +99,7 @@ public class OyuncuController : MonoBehaviour
         controller.Move(direction*Time.fixedDeltaTime);
     }
 
-   
+   /*
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if(hit.transform.tag == "Obstacle")
@@ -106,13 +107,19 @@ public class OyuncuController : MonoBehaviour
             OyuncuManager.gameOver = true;
             FindObjectOfType<SesYoneticisi>().PlaySound("OyunBitimi");
         }
-    }
+    }*/
+
     void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "slow")
         {
             forwardSpeed -= forwardSpeed * 50 / 100;
             FindObjectOfType<SesYoneticisi>().PlaySound("Kum");
+        }
+        if (other.transform.tag == "Obstacle")
+        {
+            OyuncuManager.gameOver = true;
+            FindObjectOfType<SesYoneticisi>().PlaySound("OyunBitimi");
         }
 
     }

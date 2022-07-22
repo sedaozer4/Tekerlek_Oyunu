@@ -36,6 +36,7 @@ public class OyuncuManager : MonoBehaviour
     public GameObject soundIcon;
     void Start()
     {
+        
         if (!PlayerPrefs.HasKey("pause"))
         {
             PlayerPrefs.SetFloat("pause", 1);
