@@ -36,10 +36,11 @@ public class OyuncuManager : MonoBehaviour
     public GameObject soundIcon;
     void Start()
     {
+      
         
         if (!PlayerPrefs.HasKey("pause"))
         {
-            PlayerPrefs.SetFloat("pause", 1);
+            PlayerPrefs.SetFloat("pause", 0);
         }
         if (!PlayerPrefs.HasKey("highscore"))
         {
@@ -58,6 +59,7 @@ public class OyuncuManager : MonoBehaviour
         inGamePanel.SetActive(true);
         road = 0;
         confettiActive = false;
+        PlayerPrefs.SetFloat("pause", 0);
     }
     void Update()
     {
@@ -77,7 +79,7 @@ public class OyuncuManager : MonoBehaviour
         //    metres += 0.5f * Time.fixedDeltaTime;
         }
           
-        if ((int)altinNumarasi == 0)
+        if ((int)altinNumarasi == 0&&isTime == true && isGameStarted == true )
         {
             OyuncuManager.gameOver = true;
             isTime = false;

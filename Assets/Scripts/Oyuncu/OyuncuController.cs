@@ -14,22 +14,22 @@ public class OyuncuController : MonoBehaviour
     public float jumpForce;
     public float Gravity = -20;
     public float timecount = 60;
-    public Animator animator;
+    public GameObject goldAlert;
     public static bool GameIsPaused = false;
     public GameObject pauseMenu;
     public float zaman;
-    public float fSpeed;
- 
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
+
+       
     }
 
     void Update()
     {
 
-        if(!OyuncuManager.isGameStarted)
+        if (!OyuncuManager.isGameStarted)
             return;
 
         if (forwardSpeed < maxSpeed && PlayerPrefs.GetInt("pause")==0)
@@ -121,9 +121,22 @@ public class OyuncuController : MonoBehaviour
             OyuncuManager.gameOver = true;
             FindObjectOfType<SesYoneticisi>().PlaySound("OyunBitimi");
         }
+        if (other.tag == "gold")
+        {
+            FindObjectOfType<SesYoneticisi>().PlaySound("AltınSesi");
+
+            OyuncuManager.altinNumarasi += 10;
+         
+            goldAlert.SetActive(true);
+            StartCoroutine(WaitBeforeShow());
+        }
 
     }
-
-    
+   private  IEnumerator WaitBeforeShow()
+    {
+        goldAlert.SetActive(true);
+        yield return new WaitForSeconds(3);
+        goldAlert.SetActive(false);
+    }
 }
 
