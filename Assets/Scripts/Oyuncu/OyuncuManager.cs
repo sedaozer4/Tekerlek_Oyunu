@@ -37,7 +37,6 @@ public class OyuncuManager : MonoBehaviour
     void Start()
     {
       
-        
         if (!PlayerPrefs.HasKey("pause"))
         {
             PlayerPrefs.SetFloat("pause", 0);
@@ -75,7 +74,7 @@ public class OyuncuManager : MonoBehaviour
 
         if (isTime == true&& isGameStarted==true && isPause==false)
         {
-            altinNumarasi -=  0.5f * Time.fixedDeltaTime;
+            altinNumarasi -=   1.1f*Time.fixedDeltaTime;
         //    metres += 0.5f * Time.fixedDeltaTime;
         }
           
@@ -85,7 +84,7 @@ public class OyuncuManager : MonoBehaviour
             isTime = false;
             FindObjectOfType<SesYoneticisi>().PlaySound("OyunBitimi");
         }
-        coinsText.text =  (int)altinNumarasi +"s";
+        coinsText.text = (int)altinNumarasi + "s";
         metresText.text = Math.Round(road,2)  +" km" ;
         highMetres.text =  Math.Round(PlayerPrefs.GetFloat("highscore"), 2)+"km";
 
@@ -97,7 +96,6 @@ public class OyuncuManager : MonoBehaviour
             if (road > highscore)
             {
                 confettiActive = true;
-               
                 PlayerPrefs.SetFloat("highscore", road);
                 highscorePanel.SetActive(true);
                 Random rnd = new Random();
@@ -107,7 +105,6 @@ public class OyuncuManager : MonoBehaviour
                 placement.text = PlayerPrefs.GetInt("place") + " - You";
                 inGamePanel.SetActive(false);
                 OyuncuManager.gameOver = false;
-              
             }
             else
             {   

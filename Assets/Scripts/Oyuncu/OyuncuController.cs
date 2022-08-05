@@ -124,9 +124,6 @@ public class OyuncuController : MonoBehaviour
         if (other.tag == "gold")
         {
             FindObjectOfType<SesYoneticisi>().PlaySound("AltınSesi");
-
-            OyuncuManager.altinNumarasi += 10;
-         
             goldAlert.SetActive(true);
             StartCoroutine(WaitBeforeShow());
         }
@@ -135,7 +132,7 @@ public class OyuncuController : MonoBehaviour
    private  IEnumerator WaitBeforeShow()
     {
         goldAlert.SetActive(true);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
         goldAlert.SetActive(false);
     }
 }
