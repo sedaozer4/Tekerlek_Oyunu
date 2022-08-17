@@ -22,8 +22,8 @@ public class OyuncuController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-
        
+
     }
 
     void Update()
@@ -118,6 +118,7 @@ public class OyuncuController : MonoBehaviour
         }
         if (other.transform.tag == "Obstacle")
         {
+            
             OyuncuManager.gameOver = true;
             FindObjectOfType<SesYoneticisi>().PlaySound("OyunBitimi");
         }

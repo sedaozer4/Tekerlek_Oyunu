@@ -15,7 +15,7 @@ public class OyuncuManager : MonoBehaviour
     public static float altinNumarasi;
     public Text coinsText;
     public Text metresText;
-    public bool isTime;
+    public static bool isTime;
     public static float metres;
     public int maximum;
     public int current;
@@ -36,7 +36,7 @@ public class OyuncuManager : MonoBehaviour
     public GameObject soundIcon;
     void Start()
     {
-      
+        AdManager.instance.RequestInterstitial();
         if (!PlayerPrefs.HasKey("pause"))
         {
             PlayerPrefs.SetFloat("pause", 0);
@@ -62,7 +62,6 @@ public class OyuncuManager : MonoBehaviour
     }
     void Update()
     {
-
         if (confettiActive == true)
         {
             confetti.Play();
@@ -71,6 +70,7 @@ public class OyuncuManager : MonoBehaviour
         {
             confetti.Stop();
         }
+      
 
         if (isTime == true&& isGameStarted==true && isPause==false)
         {
@@ -89,12 +89,14 @@ public class OyuncuManager : MonoBehaviour
         highMetres.text =  Math.Round(PlayerPrefs.GetFloat("highscore"), 2)+"km";
 
         if (gameOver){
-
-            Time.timeScale = 0;
+           
+            Time.timeScale = 0f;
             isTime = false;
-            highscore= PlayerPrefs.GetFloat("highscore");
+           
+                  highscore = PlayerPrefs.GetFloat("highscore");
             if (road > highscore)
             {
+               
                 confettiActive = true;
                 PlayerPrefs.SetFloat("highscore", road);
                 highscorePanel.SetActive(true);
@@ -105,17 +107,19 @@ public class OyuncuManager : MonoBehaviour
                 placement.text = PlayerPrefs.GetInt("place") + " - You";
                 inGamePanel.SetActive(false);
                 OyuncuManager.gameOver = false;
+                
             }
             else
-            {   
+            {
+               
                 inGamePanel.SetActive(false);
                 gameOverPanel.SetActive(true);
                 OyuncuManager.gameOver = false;
                 scoreText.text = "Score: "+Math.Round(road, 2) + " km";
-              
+    
             }
             road = 0;
-          
+            AdManager.instance.ShowInterstitial();
         }
 
         if(SwipeManager.tap)
@@ -134,12 +138,13 @@ public class OyuncuManager : MonoBehaviour
     }
     public void Pause()
     {
+     
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
         isPause = true;
         PlayerPrefs.SetInt("pause", 1);
         soundIcon.SetActive(true);
-
+   
     }
     public void Resume()
     {
@@ -148,6 +153,7 @@ public class OyuncuManager : MonoBehaviour
         isPause = false;
         PlayerPrefs.SetInt("pause", 0);
         soundIcon.SetActive(false);
+ 
     }
     public void Home()
     {
@@ -158,5 +164,7 @@ public class OyuncuManager : MonoBehaviour
         SceneManager.LoadScene("Menu");
         road = 0;
     }
+
+
 
 }
